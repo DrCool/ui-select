@@ -2301,6 +2301,43 @@ describe('ui-select tests', function() {
           expect(scope.selection.selectedMultiple.length).toBe(2);
 
       });
+      
+      
+      it('should display a message when the multiple selection limit has been reached', function () {
+          scope.selection.selectedMultiple = ['wladimir@email.com'];
+
+          var el = compileTemplate(
+              '<ui-select multiple limit="2" limit-message="You can only select 2 items" ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;"> \
+                  <ui-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match> \
+                  <ui-select-choices repeat="person.email as person in people | filter: $select.search"> \
+                    <div ng-bind-html="person.name | highlight: $select.search"></div> \
+                    <div ng-bind-html="person.email | highlight: $select.search"></div> \
+                  </ui-select-choices> \
+              </ui-select> \
+              '
+          );
+
+          var el2 = compileTemplate('<span class="resultDiv" ng-bind="selection.selectedMultiple"></span>');
+
+          expect(el.find('.ui-select-match-item [uis-transclude-append]:not(.ng-hide)').text())
+              .toBe("Wladimir <wladimir@email.com>");
+
+          // limit message should still be hidden because only one item is displayed
+          expect(el.find('.select2-selection-limit').hasClass('ng-hide')).toBe(true);
+
+          clickItem(el, 'Samantha');
+          expect(el.find('.ui-select-match-item [uis-transclude-append]:not(.ng-hide)').text())
+              .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>");
+
+          // limit message should be displayed now
+          clickItem(el, 'Nicole');
+          expect(el.find('.select2-selection-limit').hasClass('ng-hide')).toBe(false);
+
+          // There should still be only two items selected: Wladimir and Samantha
+          expect(el.find('.ui-select-match-item [uis-transclude-append]:not(.ng-hide)').text())
+              .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>");
+      });
+
 
     it('should change viewvalue only once when updating modelvalue', function () {
 
