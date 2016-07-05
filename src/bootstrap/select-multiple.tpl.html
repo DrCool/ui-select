@@ -16,6 +16,7 @@
            aria-label="{{ $select.baseTitle }}"
            ondrop="return false;">
   </div>
+  <div ng-show="$select.selected.length >= $select.limit" class="select2-selection-limit">{{ $select.limitMessage }}</div>
   <div class="ui-select-choices"></div>
   <div class="ui-select-no-choice"></div>
 </div>
