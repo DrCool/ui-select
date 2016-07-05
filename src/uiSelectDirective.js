@@ -88,6 +88,10 @@ uis.directive('uiSelect',
           //Limit the number of selections allowed
           $select.limit = (angular.isDefined(attrs.limit)) ? parseInt(attrs.limit, 10) : undefined;
         });
+        
+        attrs.$observe('limitMessage', function() {
+          $select.limitMessage = (angular.isDefined(attrs.limitMessage)) ? attrs.limitMessage : 'You can only select '+$select.limit+' item(s)';
+        });
 
         scope.$watch('removeSelected', function() {
             var removeSelected = scope.$eval(attrs.removeSelected);
