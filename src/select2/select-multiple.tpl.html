@@ -27,6 +27,7 @@
   </ul>
   <div class="ui-select-dropdown select2-drop select2-with-searchbox select2-drop-active"
        ng-class="{'select2-display-none': !$select.open || $select.items.length === 0}">
+    <div ng-show="$select.selected.length >= $select.limit" class="select2-selection-limit">{{ $select.limitMessage }}</div>
     <div class="ui-select-choices"></div>
   </div>
 </div>
